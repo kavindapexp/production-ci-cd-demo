@@ -26,3 +26,6 @@ jobs:
 
       - name: Run application import test
         run: python -c "from app.main import app; print('Application import successful')"
+
+      - name: Build Docker image
+        run: docker build -t production-ci-cd-demo:${{ github.sha }} .
