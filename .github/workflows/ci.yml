@@ -29,3 +29,11 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t production-ci-cd-demo:${{ github.sha }} .
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: production-ci-cd-demo:${{ github.sha }}
+          format: table
+          severity: HIGH,CRITICAL
+          exit-code: "0"
