@@ -45,12 +45,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Tag Docker image
         if: github.event_name != 'pull_request'
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          push: true
-          tags: |
-            kavindapexp/production-ci-cd-demo:${{ github.sha }}
-            kavindapexp/production-ci-cd-demo:latest
+        run: |
+          docker tag production-ci-cd-demo:${{ github.sha }} kavindapexp/production-ci-cd-demo:${{ github.sha }}
+          docker tag production-ci-cd-demo:${{ github.sha }} kavindapexp/production-ci-cd-demo:latest
+
+      - name: Push Docker image
+        if: github.event_name != 'pull_request'
+        run: |
+          docker push kavindapexp/production-ci-cd-demo:${{ github.sha }}
+          docker push kavindapexp/production-ci-cd-demo:latest
